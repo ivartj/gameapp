@@ -59,7 +59,7 @@ void setvideo(void)
 	if(window == NULL)
 		fatal("SDL_SetVideoMode: %s.\n", SDL_GetError());
 
-	if(canvas == NULL) {
+	if(canvas != NULL) {
 		SDL_FreeSurface(canvas);
 		cairo_surface_destroy(cairosurface);
 	}
