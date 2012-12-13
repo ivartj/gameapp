@@ -5,7 +5,7 @@
 #include <cairo/cairo.h>
 #include <stdint.h>
 
-typedef uint uint32_t;
+typedef uint32_t uint;
 
 extern int width;
 extern int height;
