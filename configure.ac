@@ -1,4 +1,4 @@
-AC_INIT([game], [0.01], [it.jarlsby@stud.uis.no])
+AC_INIT([gameapp], [0.01], [it.jarlsby@stud.uis.no])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC
 AM_PROG_CC_C_O
