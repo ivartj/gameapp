@@ -7,4 +7,8 @@
 
 typedef uint32_t uint;
 
+extern int playerid;
+extern int playermx;
+extern int playermy;
+
 #endif

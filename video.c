@@ -12,7 +12,8 @@
 
 static void setvideo(void);
 
-static void handlekey(SDL_Event *ev);
+static void handlekeydown(SDL_Event *ev);
+static void handlekeyup(SDL_Event *ev);
 static void handlequit(SDL_Event *ev);
 static void handleresize(SDL_Event *ev);
 
@@ -24,7 +25,8 @@ int uiheight = 480;
 static int sdlvideoflags = SDL_HWSURFACE | SDL_RESIZABLE | SDL_DOUBLEBUF;
 
 void (*handlevideo[256])(SDL_Event *ev) = {
-	[SDL_KEYDOWN] = handlekey,
+	[SDL_KEYDOWN] = handlekeydown,
+	[SDL_KEYUP] = handlekeyup,
 	[SDL_QUIT] = handlequit,
 	[SDL_VIDEORESIZE] = handleresize,
 };
@@ -71,11 +73,39 @@ static void handlequit(SDL_Event *ev)
 	exit(EXIT_SUCCESS);
 }
 
-static void handlekey(SDL_Event *ev)
+static void handlekeydown(SDL_Event *ev)
 {
+	switch(ev->key.keysym.sym) {
+	case SDLK_UP:
+		playermy = -1;
+		break;
+	case SDLK_DOWN:
+		playermy = 1;
+		break;
+	case SDLK_LEFT:
+		playermx = -1;
+		break;
+	case SDLK_RIGHT:
+		playermx = 1;
+		break;
+	}
 	return;
 }
 
+static void handlekeyup(SDL_Event *ev)
+{
+	switch(ev->key.keysym.sym) {
+	case SDLK_UP:
+	case SDLK_DOWN:
+		playermy = 0;
+		break;
+	case SDLK_LEFT:
+	case SDLK_RIGHT:
+		playermx = 0;
+		break;
+	}
+	return;
+}
 static void handleresize(SDL_Event *ev)
 {
 	uiwidth = ev->resize.w;

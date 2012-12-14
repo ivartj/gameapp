@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "main.h"
 #include "game.h"
 
@@ -27,7 +28,9 @@ int thing_create(int x, int y, void (*draw)(thing *))
 	new->y = y;
 	new->draw = draw;
 
+	assert(new != NULL);
 	things[idx] = new;
+	thingcount++;
 
 	return idx;
 }
@@ -38,7 +41,8 @@ static void inctblcap(void)
 	int i;
 	newcap = thingcap * 2 + 1;
 	things = realloc(things, sizeof(thing *) * newcap);
-	memset(things + sizeof(thing *) * thingcap, 0, (newcap - thingcap) * sizeof(thing *));
+	for(i = thingcap; i < newcap; i++)
+		things[i] = NULL;
 	thingcap = newcap;
 }
 
@@ -91,6 +95,12 @@ int thing_iter(thing **iter)
 void gamestep(void)
 {
 	thing *iter = NULL;
+	thing *player;
+
+	player = thing_get(playerid);
+	assert(player != NULL);
+	player->dx += (double)playermx * 0.01;
+	player->dy += (double)playermy * 0.01;
 
 	while(thing_iter(&iter)) {
 		iter->x += iter->dx;

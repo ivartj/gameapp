@@ -12,6 +12,10 @@
 
 static void mainloop(void);
 
+int playerid;
+int playermx = 0;
+int playermy = 0;
+
 void fatal(char *fmt, ...)
 {
 	va_list ap;
@@ -53,6 +57,7 @@ void test(void)
 	id = thing_create(50, 50, draw_square);
 	t = thing_get(id);
 	t->dx = 0.1;
+	playerid = thing_create(100, 50, draw_square);
 }
 
 int main(int argc, char *argv[])
