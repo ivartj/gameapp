@@ -7,10 +7,4 @@
 
 typedef uint32_t uint;
 
-extern int width;
-extern int height;
-extern SDL_Surface *window;
-extern SDL_Surface *canvas;
-extern cairo_surface_t *cairosurface;
-
 #endif

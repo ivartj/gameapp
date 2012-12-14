@@ -1,8 +1,10 @@
 #include <cairo/cairo.h>
 #include <math.h>
+
 #include "draw.h"
 #include "main.h"
 #include "game.h"
+#include "video.h"
 
 static cairo_t *cr;
 
@@ -21,7 +23,7 @@ void draw(void)
 	cairo_set_source_rgb(cr, 0.5, 0.5, 0.5);
 	cairo_set_line_width(cr, 1);
 	cairo_move_to(cr, 0, 312.5);
-	cairo_line_to(cr, width, 312.5);
+	cairo_line_to(cr, uiwidth, 312.5);
 	cairo_stroke(cr);
 
 	while(thing_iter(&iter)) {
