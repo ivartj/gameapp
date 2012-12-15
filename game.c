@@ -9,7 +9,7 @@ static int thingcount = 0;
 static int thingcap = 0;
 static double g = 0.005;
 
-int thing_create(int x, int y, void (*draw)(thing *))
+int thing_create(int x, int y, int w, int h, void (*draw)(thing *))
 {
 	int i;
 	int idx;
@@ -26,6 +26,8 @@ int thing_create(int x, int y, void (*draw)(thing *))
 	new->id = idx;
 	new->x = x;
 	new->y = y;
+	new->w = w;
+	new->h = h;
 	new->draw = draw;
 
 	assert(new != NULL);
@@ -95,17 +97,36 @@ int thing_iter(thing **iter)
 void gamestep(void)
 {
 	thing *iter = NULL;
+	thing *jter = NULL;
 	thing *player;
+	double step;
 
 	player = thing_get(playerid);
 	assert(player != NULL);
 	player->dx += (double)playermx * 0.01;
 	player->dy += (double)playermy * 0.01;
 
+	steptime = 1;
+
+	// do-while finding collisions
+		// find soonest collision
+			// one against rest, first of rest against second and rest
+		// Reposition all until collision or end of gamestep and adjust momentum of colliding objects
+
+	do {
+		while(thing_iter(&iter)) {
+			jter = iter;
+			while(thing_iter(&jter)) {
+				
+			}
+		}
+
+	} while(steptime);
+
 	while(thing_iter(&iter)) {
 		iter->x += iter->dx;
-		if(iter->y + iter->dy >= 300) {
-			iter->y = 300 * 2 - iter->y - iter->dy;
+		if(iter->y + iter->dy + iter->h / 2 >= 300) {
+			iter->y = (300 - iter->h / 2) * 2 - iter->y - iter->dy;
 			iter->dy = 0 < 0.15 - iter->dy ? 0 : 0.15 - iter->dy;
 		} else
 			iter->y += iter->dy;

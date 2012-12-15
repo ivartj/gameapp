@@ -10,10 +10,13 @@ struct thing {
 	double x, y;
 	double dx, dy;
 	double w, h;
+	double m; /* mass */
+	int weightless;
+	int static;
 	void (*draw)(thing *);
 };
 
-int thing_create(int x, int y, void (*draw)(thing *));
+int thing_create(int x, int y, int w, int h, void (*draw)(thing *));
 thing *thing_get(int id);
 int thing_destroy(int id);
 int thing_iter(thing **iter);
