@@ -94,12 +94,26 @@ int thing_iter(thing **iter)
 	return 1;
 }
 
+/* Returns -1 on no collision, collision time otherwise. */
+static double collidetest(double time, thing *icol, thing *jcol)
+{
+	// TODO
+}
+
+static void collide(thing *icol, thing *jcol)
+{
+	// TODO
+}
+
 void gamestep(void)
 {
 	thing *iter = NULL;
 	thing *jter = NULL;
+	thing *icol, *jcol;
 	thing *player;
-	double step;
+	double steptime;
+	double coltime;
+	double coltesttime;
 
 	player = thing_get(playerid);
 	assert(player != NULL);
@@ -108,29 +122,26 @@ void gamestep(void)
 
 	steptime = 1;
 
-	// do-while finding collisions
-		// find soonest collision
-			// one against rest, first of rest against second and rest
-		// Reposition all until collision or end of gamestep and adjust momentum of colliding objects
-
 	do {
+		icol = jcol = NULL;
+		coltime = steptime;
 		while(thing_iter(&iter)) {
 			jter = iter;
 			while(thing_iter(&jter)) {
-				
+				coltesttime = collidetest(coltime, iter, jter);
+				if(coltesttime >= 0 && coltesttime < coltime) {
+					coltime = coltesttime;
+					icol = iter;
+					jcol = jter;
+				}
 			}
 		}
-
-	} while(steptime);
-
-	while(thing_iter(&iter)) {
-		iter->x += iter->dx;
-		if(iter->y + iter->dy + iter->h / 2 >= 300) {
-			iter->y = (300 - iter->h / 2) * 2 - iter->y - iter->dy;
-			iter->dy = 0 < 0.15 - iter->dy ? 0 : 0.15 - iter->dy;
-		} else
-			iter->y += iter->dy;
-		iter->y += iter->dy;
-		iter->dy += g;
-	}
+		iter = NULL;
+		while(thing_iter(&iter)) {
+			iter->x += iter->dx * coltime;
+			iter->y += iter->dy * coltime;
+		}
+		steptime -= coltime;
+		collide(icol, jcol);
+	} while(steptime > 0);
 }

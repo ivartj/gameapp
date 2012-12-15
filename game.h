@@ -12,7 +12,7 @@ struct thing {
 	double w, h;
 	double m; /* mass */
 	int weightless;
-	int static;
+	int motionless;
 	void (*draw)(thing *);
 };
 
