@@ -1,8 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <cairo/cairo.h>
-
 typedef struct thing thing;
 
 struct thing {

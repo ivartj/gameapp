@@ -20,12 +20,6 @@ void draw(void)
 	cairo_set_source_rgb(cr, 1, 1, 1);
 	cairo_paint(cr);
 
-	cairo_set_source_rgb(cr, 0.5, 0.5, 0.5);
-	cairo_set_line_width(cr, 1);
-	cairo_move_to(cr, 0, 300);
-	cairo_line_to(cr, uiwidth, 300);
-	cairo_stroke(cr);
-
 	while(thing_iter(&iter)) {
 		cairo_save(cr);
 		if(iter->draw)

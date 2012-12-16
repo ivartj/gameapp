@@ -54,10 +54,10 @@ void test(void)
 	int id;
 	thing *t;
 
-	id = thing_create(50, 50, 30, 70, draw_square);
+	playerid = thing_create(100, 50, 25, 25, draw_square);
+	id = thing_create(50, 150, 30, 70, draw_square);
 	t = thing_get(id);
 	t->dx = 0.1;
-	playerid = thing_create(100, 50, 25, 25, draw_square);
 }
 
 int main(int argc, char *argv[])

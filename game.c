@@ -1,4 +1,3 @@
-#include <assert.h>
 #include "main.h"
 #include "game.h"
 
@@ -30,7 +29,6 @@ int thing_create(int x, int y, int w, int h, void (*draw)(thing *))
 	new->h = h;
 	new->draw = draw;
 
-	assert(new != NULL);
 	things[idx] = new;
 	thingcount++;
 
@@ -97,12 +95,32 @@ int thing_iter(thing **iter)
 /* Returns -1 on no collision, collision time otherwise. */
 static double collidetest(double time, thing *icol, thing *jcol)
 {
-	// TODO
+	double newtime;
+	double y;
+	double dy;
+	if(icol->y + icol->h / 2 > jcol->y - jcol->h / 2)
+		return -1;
+	if(icol->dy - jcol->dy < 0)
+		return -1;
+	y = icol->y + icol->h / 2 - jcol->y + jcol->h / 2;
+	dy = jcol->dy - icol->dy;
+	newtime = y / dy;
+	if(newtime > time)
+		return -1;
+	if(icol->x + icol->dx * newtime - icol->w / 2 > jcol->x + jcol->dx * newtime + jcol->w / 2)
+		return -1;
+	if(icol->x + icol->dx * newtime + icol->w / 2 < jcol->x + jcol->dx * newtime - jcol->w / 2)
+		return -1;
+	return newtime;
 }
 
 static void collide(thing *icol, thing *jcol)
 {
-	// TODO
+	double dy;
+
+	dy = icol->dy;
+	icol->dy = jcol->dy;
+	jcol->dy = dy;
 }
 
 void gamestep(void)
@@ -116,12 +134,19 @@ void gamestep(void)
 	double coltesttime;
 
 	player = thing_get(playerid);
-	assert(player != NULL);
 	player->dx += (double)playermx * 0.01;
 	player->dy += (double)playermy * 0.01;
 
 	steptime = 1;
 
+	/* Gravity */
+	/*
+	iter = NULL;
+	while(thing_iter(&iter))
+		iter->dy += g;
+	*/
+	
+	iter = NULL;
 	do {
 		icol = jcol = NULL;
 		coltime = steptime;
@@ -142,6 +167,7 @@ void gamestep(void)
 			iter->y += iter->dy * coltime;
 		}
 		steptime -= coltime;
-		collide(icol, jcol);
+		if(icol && jcol)
+			collide(icol, jcol);
 	} while(steptime > 0);
 }
